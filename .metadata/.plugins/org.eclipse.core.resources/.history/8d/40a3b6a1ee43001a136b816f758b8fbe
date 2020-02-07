@@ -1,0 +1,250 @@
+*** Settings ***
+Library    SeleniumLibrary
+Library     String
+Resource    ../parser_utilities/test_bed_parser.robot
+Resource    ../db_utilities/db_utilities.robot
+Resource    common.robot
+
+
+*** Variables ***
+#${BROWSER}     firefox
+${BROWSER}     headlesschrome
+#${BROWSER}    headlessfirefox
+  
+
+*** Keywords ***
+Login To Application with Valid Employee Log in
+         Connect to DB update employee password and new theme         
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url        
+         ${uname}    ${passwd}=    Get Valid Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button           
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Close Browser
+         
+Login To Application with Resigned Employee Log in
+         Connect to DB update employee password and new theme         
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url        
+         ${uname}    ${passwd}=    Get Resigned Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button           
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //small[contains(text(),"Username or password is incorrect!")]    60    
+         Page Should Contain    Username or password is incorrect!        
+         Close Browser
+         
+Login To Application with Deleted Employee Log in
+         ${base_url}=    Get Base Url
+         Open Browser    ${base_url}    ${BROWSER}
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button    60
+         Input Text    //input[@id="username"]     majordomo
+         Input Text    //input[@id="password"]     sa
+         Click Button  //button
+         Wait Until Element Is Visible    //div[contains(text(),"HR News")]    60
+         Go To    ${deleteemp_url}
+         Wait Until Element Is Visible    //span[contains(text(),"select an employee...")]    60
+         Click Element    //span[contains(text(),"select an employee...")]
+         Input Text    //input[@type="text"]    001
+         Wait Until Element Is Visible    //a[contains(text(),"John [001] ")]    60        
+         Double Click Element   //a[contains(text(),"John [001] ")]        
+         Wait Until Element Is Visible    //span[@ng-click="deleteEmployee()"]    60
+         Sleep    5s
+         Click Element    //span[@ng-click="deleteEmployee()"]
+         Wait Until Element Is Visible    //button[@data-button="Confirm"]    60        
+         Click Button    //button[@data-button="Confirm"]
+         Sleep    5s
+         Click Element    //a[@ng-click="doLogout()"]
+         Wait Until Element Is Visible    //small[contains(text(),"Login again")]    60           
+         Click Element    //small[contains(text(),"Login again")]
+         Wait Until Element Is Visible    //button    60        
+         ${uname}    ${passwd}=    Get Delete Employee Credentials
+         #Wait Until Element Is Visible    //button    60
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //small[contains(text(),"Username or password is incorrect!")]    60    
+         Page Should Contain    Username or password is incorrect!        
+         Close Browser                         
+        
+Login To Application with Disabled Employee Portal Access
+         Connect to DB to disable the Employee Access
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url     
+         ${uname}    ${passwd}=    Get Valid Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //small[contains(text(),"Sorry, your account has been disabled. Please contact admin for support.")]    60
+         Page Should Contain    Sorry, your account has been disabled. Please contact admin for support.
+         Close Browser
+         
+Login To Application after Enabling Employee Portal Access
+         Connect to DB to enable the Employee Access
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url       
+         ${uname}    ${passwd}=    Get Valid Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Page Should Contain    Upcoming Holidays
+         Close Browser
+         
+Login To Application after Regenerate and View for Employee
+         Login as Named User to generate and view password
+         Wait Until Element Is Visible    //div[@ng-model="form.password"]//span    60        
+         ${generatepassword}=    Get Text    //div[@ng-model="form.password"]//span             
+         Click Element    //a[@ng-click="doLogout()"]
+         Wait Until Element Is Visible    //small[contains(text(),"Login again")]    60           
+         Click Element    //small[contains(text(),"Login again")]
+         Wait Until Element Is Visible    //button    60
+         Input Text    //input[@id="username"]     5032
+         Input Text    //input[@id="password"]     ${generatepassword}
+         Click Button  //button
+         Wait Until Element Is Visible    //input[@name="currentPassword"]    60
+         Input Text    //input[@name="currentPassword"]    ${generatepassword}
+         Input Text    //input[@name="newPassword"]    Sa@
+         Input Text    //input[@name="confirmPassword"]    Sa@
+         Click Button  //button
+         Wait Until Element Is Visible    //input[@id="username"]    60
+         Input Text    //input[@id="username"]     5032
+         Input Text    //input[@id="password"]    Sa@
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Close Browser
+         
+Login To Application after Regenerate and Email password for Employee
+         # Login as Named User to generate and email password
+         Open Mailbox    server=smtp.gmail.com    user=subbu.gt369@gmail.com    password=gtpro123
+         ${LATEST}=    Wait For Email    fromEmail=subbu.gt369@gmail.com    toEmail=subbu.gt369@gmail.com   subject=Your greytHR password has been regenerated   timeout=50
+         #Log To Console    ${LATEST}    
+         # ${parts}=    Walk Multipart Email    ${LATEST}
+         # @{fields}=   Get Multipart Field Names
+         ${from}=    Get Email Body    ${LATEST}
+         ${test}=    Fetch From Right    ${from}    marker
+         Log To Console    ${test}               
+         #Open Link From Email    ${LATEST}    
+         #Log To Console    ${link}    
+         #Open Browser    ${link[0]} 
+         #Maximize Browser Window
+         #Wait Until Element Is Visible    //input[@name="newPassword"]    60        
+         #Input Text    //input[@name="newPassword"]    Sa@
+         #Input Text    //input[@name="confirmPassword"]    Sa@
+         
+Login to Application after changing the Employee Number
+         Connecto to DB to change the Employee Number         
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url        
+         ${uname}    ${passwd}=    Get Change Employee Number Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button           
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Close Browser
+         
+Login to Application after changing the Employee Password       
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url        
+         ${uname}    ${passwd}=    Get Valid Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button           
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Go To    ${base_url}v3/portal/ess/account-settings/change-password
+         Wait Until Element Is Visible    //input[@name="currentPassword"]    60
+         Input Text    //input[@name="currentPassword"]    sa
+         Input Text    //input[@name="newPassword"]    sd
+         Input Text    //input[@name="confirmPassword"]    sd
+         Click Button    //button[@type="submit"]
+         Wait Until Element Is Visible    //p[contains(text(),"Password Changed Successfully")]
+         Click Element    //a[@title="Logout"]
+         Wait Until Element Is Visible    //small[contains(text(),"Login again")]    60           
+         Click Element    //small[contains(text(),"Login again")]
+         Wait Until Element Is Visible    //button    60
+         Input Text    //input[@id="username"]     5028
+         Input Text    //input[@id="password"]    sd
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Close Browser
+         
+Login to Application using employee Email option
+         Connecto to DB to change Employee Email Option
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url
+          ${uname}    ${passwd}=    Get Email Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button           
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Close Browser
+         
+Login to Application using past leaving date
+         Connecto to DB to change past leaving date
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url
+          ${uname}    ${passwd}=    Get Email Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button           
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Close Browser
+         
+Login to Application using future leaving date
+         Connecto to DB to change past future date
+         [Arguments]    ${username}    ${password}
+         ${base_url}=    Get Base Url
+          ${uname}    ${passwd}=    Get Email Employee Credentials
+         Open Browser    ${base_url}    ${BROWSER}   
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button           
+         Input Text    //input[@id="username"]     ${uname}
+         Input Text    //input[@id="password"]     ${passwd}
+         Click Button  //button
+         Wait Until Element Is Visible    //h4[contains(text(),"Upcoming Holidays")]    60
+         Close Browser
+         
+Login to Application with Google account
+         Connecto to DB to update gmail account
+         ${base_url}=    Get Base Url
+         Open Browser    ${base_url}    ${BROWSER}
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button    60
+         Click Element    //ul//google-signin//li
+         Wait Until Element Is Visible    //input[@type="email"]    60        
+         Input Text    //input[@type="email"]    subbu.gt369@gmail.com
+         Click Element    //span[contains(text(),"Next")]
+         Wait Until Element Is Visible    //input[@type="password"]
+         Input Text    //input[@type="password"]    gtpro123               
+         
+             
+                          
+
+         

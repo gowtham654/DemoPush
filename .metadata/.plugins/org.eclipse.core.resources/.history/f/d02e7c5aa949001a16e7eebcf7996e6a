@@ -1,0 +1,5 @@
+*** Variables ***
+${URL}     https://livetest.greythr.com/
+${browser}     chrome
+@{Username_Password}     majordomo     sa
+&{Variable}     username=majordomo     password=sa

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.robotframework.ide.tableditor.activePage./RobotProject1/test/Testsuite1.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.project.editor.activePage.RobotProject1">
+		<item key="activePage" value="LibrariesProjectConfigurationEditorPart"/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./HydrauthFunctionality/utilites/ui_utilities/common.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./HydrauthFunctionality/utilites/ui_utilities/employee_page.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./HydrauthFunctionality/test_suites/GHR_Employeepage/TC_Employee.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./HydrauthFunctionality/utilites/parser_utilities/test_bed_parser.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./Payroll/utilities/ui_utilities/common.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./Payroll/testsuites/GHR-AdminPage/TC01-Payroll.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./Payroll/utilities/parser_utilities/test_bed_parser.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./HydrauthFunctionality/utilites/misc_utilities/misc_utilties.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./Payroll/utilities/misc_utilities/misc_utilities.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./HydrauthFunctionality/utilites/db_utilities/db_utilities.robot">
+		<item key="activePage" value=""/>
+	</section>
+	<section name="org.robotframework.ide.tableditor.activePage./RobotProject1/test/Json.robot">
+		<item key="activePage" value=""/>
+	</section>
+</section>

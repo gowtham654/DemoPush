@@ -1,0 +1,55 @@
+*** Settings ***
+Library    SeleniumLibrary
+Library     String
+Resource    ../parser_utilities/test_bed_parser.robot
+Resource    ../db_utilities/db_utilities.robot
+Library        ImapLibrary
+
+*** Variables ***
+${BROWSER}     firefox
+#${BROWSER}    headlessfirefox
+${deleteemp_url}    http://masterdemo.gtmail.gr8hr.biz/ngapp/employee/main/delete-employee
+${generate_url}    http://masterdemo.gtmail.gr8hr.biz/ngapp/employee/main/generate-password
+
+*** Keywords ***
+Login as Named User to generate and view password
+     ${base_url}=    Get Base Url
+         Open Browser    ${base_url}    ${BROWSER}
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button    60
+         Input Text    //input[@id="username"]     majordomo
+         Input Text    //input[@id="password"]     sa
+         Click Button  //button
+         Wait Until Element Is Visible    //div[contains(text(),"HR News")]    60
+         Go To    ${generate_url}
+         Wait Until Element Is Visible    //span[contains(text(),"select an employee...")]    60
+         Click Element    //span[contains(text(),"select an employee...")]
+         Input Text    //input[@type="text"]    5032
+         Wait Until Element Is Visible    //a[contains(text(),"P Hari Hara Rao [5032]")]    60        
+         Double Click Element   //a[contains(text(),"P Hari Hara Rao [5032]")]
+         Sleep    5s
+         #Wait Until Element Is Visible    //button[@ng-click="submit(employee)"]    60
+         Double Click Element    //button[@ng-click="submit(employee)"]//i
+         Wait Until Element Is Visible    //div[@ng-model="form.password"]    60
+         
+Login as Named User to generate and email password
+         Connect to DB to update the mail ID to generate password
+         ${base_url}=    Get Base Url
+         Open Browser    ${base_url}    ${BROWSER}
+         Maximize Browser Window
+         Wait Until Element Is Visible    //button    60
+         Input Text    //input[@id="username"]     majordomo
+         Input Text    //input[@id="password"]     sa
+         Click Button  //button
+         Wait Until Element Is Visible    //div[contains(text(),"HR News")]    60
+         Go To    ${generate_url}
+         Wait Until Element Is Visible    //span[contains(text(),"select an employee...")]    60
+         Click Element    //span[contains(text(),"select an employee...")]
+         Input Text    //input[@type="text"]    5002
+         Wait Until Element Is Visible    //a[contains(text(),"S Raj Kumar [5002] ")]    60        
+         Double Click Element   //a[contains(text(),"S Raj Kumar [5002] ")]
+         Sleep    5s
+         Double Click Element    //button[@ng-click="submit(employee)"]
+         
+          
+         

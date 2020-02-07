@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot rpa="false" generated="20200131 15:50:05.308" generator="Robot 3.1.2 (Python 2.7.10 on win32)">
+<suite source="C:\Robotproject\RobotProject1" id="s1" name="RobotProject1">
+<suite source="C:\Robotproject\RobotProject1\test" id="s1-s1" name="Test">
+<suite source="C:\Robotproject\RobotProject1\test\Json.robot" id="s1-s1-s1" name="Json">
+<test id="s1-s1-s1-t1" name="Tsetcase1">
+<kw name="Load JSON From File" library="JSONLibrary">
+<doc>Load JSON from file.</doc>
+<arguments>
+<arg>D:/yogesha/login_bed.json</arg>
+</arguments>
+<assign>
+<var>${json_variablre}</var>
+</assign>
+<msg timestamp="20200131 15:50:05.541" level="INFO">${json_variablre} = {u'credentials2': {u'username': u'003', u'password': u'sa'}, u'credentials3': {u'username': u'CH5032', u'password': u'Sa@'}, u'credentials1': {u'username': u'5036', u'password': u'sa'}, u'base_url': u...</msg>
+<status status="PASS" endtime="20200131 15:50:05.542" starttime="20200131 15:50:05.540"></status>
+</kw>
+<kw name="Get Value From Json" library="JSONLibrary">
+<doc>Get Value From JSON using JSONPath</doc>
+<arguments>
+<arg>${json_variablre}</arg>
+<arg>$.firstName</arg>
+</arguments>
+<assign>
+<var>${First_name}</var>
+</assign>
+<msg timestamp="20200131 15:50:05.596" level="INFO">${First_name} = []</msg>
+<status status="PASS" endtime="20200131 15:50:05.596" starttime="20200131 15:50:05.542"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>${First_name}</arg>
+</arguments>
+<status status="PASS" endtime="20200131 15:50:05.597" starttime="20200131 15:50:05.596"></status>
+</kw>
+<status status="PASS" endtime="20200131 15:50:05.597" critical="yes" starttime="20200131 15:50:05.539"></status>
+</test>
+<status status="PASS" endtime="20200131 15:50:05.598" starttime="20200131 15:50:05.388"></status>
+</suite>
+<status status="PASS" endtime="20200131 15:50:05.600" starttime="20200131 15:50:05.384"></status>
+</suite>
+<status status="PASS" endtime="20200131 15:50:05.602" starttime="20200131 15:50:05.353"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="RobotProject1" pass="1">RobotProject1</stat>
+<stat fail="0" id="s1-s1" name="Test" pass="1">RobotProject1.Test</stat>
+<stat fail="0" id="s1-s1-s1" name="Json" pass="1">RobotProject1.Test.Json</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
